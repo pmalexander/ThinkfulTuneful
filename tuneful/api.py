@@ -11,33 +11,36 @@ from . import app
 from .database import session
 from .utils import upload_path
 
-@app.route("/api/music", methods=["GET"])
+@app.route("/api/musiclist", methods=["GET"])
 @decorators.accept("application/json")
 def music_get():
     """Pulls playlist of music"""
-    musical = session.query(models.music).all()
+    music = session.query(models.music).all()
     
     """Converts data to JSON and returns result (music)"""
-    data = json.dumps([music.as_dictionary() for music in musical ()
+    data = json.dumps([music.as_dictionary() for music in music ()
     return Response(data, 200, mimetype="application/json")
     
-@app.route("/api/music", methods=["POST"])
+@app.route("/api/musiclist", methods=["POST"])
 @decorators.accept("application/json")
 def music_post():
     """Adds music to playlist"""
     data = music.as_dictionary 
+    file = 
     
-    if not 
+    if not data
+        flash("Invalid file")
+        return redirect(url_for("musiclist"))
     
-    session.add(entry)
+    session.add(music)
     session.commit()
-    return redirect(url_for("music"))
+    return redirect(url_for("musiclist"))
     
-@app.route("/api/music/<int:id>", methods=["GET"])
+@app.route("/api/musiclist/<int:id>", methods=["GET"])
 @decorators.accept("application/json")
     music = session.query(models.music).get(id)
 
-@app.route("/api/music/<int:id>", methods=["POST"])
+@app.route("/api/musiclist/<int:id>", methods=["POST"])
 @decorators.accept("application/json")
 def music_file(id):
     #post song on list
