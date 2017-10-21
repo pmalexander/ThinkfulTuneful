@@ -11,21 +11,67 @@ from . import app
 from .database import session
 from .utils import upload_path
 
+#acquires song to mount in app
+@app.route("api/songs", methods=["GET"])
+@decorates.accept("application/json")
+def songs_get():
+    songs = session.query(models.Song).all()
+    
+    data = [song.as_dictionary() for song in songs]
+    data = json.dumps(data)
+    
+    return Response(data, 200, mimetype="application/json")
+
+@app.route("/api/files", methods="POST"])
+@decorators.require("multipart/form-data")
+@decorators.accept("appication")
+def file_post():
+    file = request.files.get("file")
+    
+    filename = secure_filename(file.filename)
+    db_file = models.File(filename=filename)
+    session.add(db_file)
+    session.commit)()
+    file.save(upload_path(filename))
+
+    data = db_file.as_dictionary()
+    return Response(json.dumps(data), 201, mimetype="application/json")
+
+#loads music into app
+@app.route("/api/songs", methods=["POST"]
+@decorators.accept("application/json")
+def song_post():
+    obj = json.loads(request.data.decode('utf-8'))
+
+    song = models.Song(file=obj['file']['id'])
+    session.add(song)
+    session.commit()
+    
+    data = song.as_dictionary()
+    return Response(json.dumps(data), 201, mimetype="application/json")
+
+#uploads music to browser
+@app.route("/uploads/<filename>", methods=["GET"]))
+def uploaded_file(filename):
+    return send_from_directory(upload_path(), filename)
+
+#obsolete/incorrect/ignore
+"""
 @app.route("/api/musiclist", methods=["GET"])
 @decorators.accept("application/json")
 def music_get():
     """Pulls playlist of music"""
-    music = session.query(models.music).all()
+    listmusic = session.query(models.music).all()
     
     """Converts data to JSON and returns result (music)"""
-    data = json.dumps([music.as_dictionary() for music in music ()
+    data = json.dumps([music.as_dictionary() for music in listmusic ])
     return Response(data, 200, mimetype="application/json")
     
 @app.route("/api/musiclist", methods=["POST"])
 @decorators.accept("application/json")
 def music_post():
     """Adds music to playlist"""
-    data = music.as_dictionary 
+    data = music.as_dictionary() 
     file = 
     
     if not data

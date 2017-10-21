@@ -10,6 +10,8 @@ Base = declarative_base()
 Session = sessionmaker(bind=engine)
 session = Session()
 
-# Create your models here
+# Create your models here to allow database to function within program
+# imports from models file
 
+from . import models
 Base.metadata.create_all(engine)
